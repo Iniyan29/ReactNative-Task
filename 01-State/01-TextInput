@@ -1,0 +1,78 @@
+import * as React from 'react';
+import {
+  Button,
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log('constructor executed');
+
+    this.state = {
+      name: '',
+      age: '',
+      email: '',
+      gender: '',
+    };
+  }
+
+  handleButtonPress = () => {
+    // console.log('button pressed');
+  };
+  
+  // handleOnchangeText = (value, value1, value2, value3) => {
+  //   console.log('value-->', value1);
+  //       this.setState({name:value})
+  //   this.setState({age:value1});
+  //   this.setState({email:value2});
+  //   this.setState({gender:value3});
+
+  // };
+  handleInputChange=(value, key)=>{
+    this.setState({[key]:value})
+  }
+
+
+  render() {
+    console.log('render executed');
+    console.log("this.state-->",this.state)
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ margin: 20,}}>
+          <TextInput
+            value={this.state.name}
+            // textContentType="password" secureTextEntry={true}
+            style={{ borderWidth: 1, borderColor: 'black', marginBottom:20}}
+            onChangeText={(value)=>this.handleInputChange(value,"name")}
+            // onChangeText={(value) => {this.setState({name:value})}}
+          />
+          <TextInput
+            value={this.state.age}
+            style={{ borderWidth: 1, borderColor: 'black', marginBottom:20}}
+             onChangeText={(value)=>this.handleInputChange(value,"age")}
+            // onChangeText={(value) => {this.setState({age:value})}}
+          /><TextInput
+            value={this.state.email}
+            style={{ borderWidth: 1, borderColor: 'black', marginBottom:20}}
+            // onChangeText={(value) => {
+            //  this.setState({email:value})}}
+             onChangeText={(value)=>this.handleInputChange(value,"email")}
+          /><TextInput
+            value={this.state.gender}
+            style={{ borderWidth: 1, borderColor: 'black', marginBottom:20}}
+            // onChangeText={(value) => {this.setState({gender:value})}}
+             onChangeText={(value)=>this.handleInputChange(value,"gender")}
+          />
+          <Button title="Submit" onPress={() => this.handleButtonPress()} />
+        </View> 
+      </View>
+    );
+  }
+}
+export default App;
