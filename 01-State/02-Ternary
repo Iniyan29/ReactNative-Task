@@ -1,0 +1,54 @@
+import * as React from 'react';
+import {
+  Button,
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    // console.log('constructor executed');
+
+    this.state = {
+     colorstate:"black",
+       data:[
+       {id:1, buttoncolor:"", is_active:true},
+       {id:2, buttoncolor:"", is_active:true},
+       {id:3, buttoncolor:"", is_active:true} ,      
+       {id:4, buttoncolor:"", is_active:true}
+     ]
+    };
+  }
+
+  handleButtonPress = (val,ue) => {
+    console.log('button pressed',val);
+    this.setState({colorstate:val})
+  
+  };
+  
+  
+
+  render() {
+    // console.log('render executed');
+    // console.log("this.state-->",this.state)
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' ,backgroundColor:this.state.colorstate}}>
+        <View style={{ }}>
+          <Text style={{color:"white", fontWeight:"bold", fontSize:30, marginBottom:30}}>BACKGROUND</Text>
+          <View style={{margin:1, borderColor:"", borderWidth:1}}><Button title="red" onPress={() => this.handleButtonPress("red", "white")} /> </View>
+          <View style={{margin:1, borderColor:"", borderWidth:1}}><Button title="ornge" onPress={() => this.handleButtonPress("orange", "white")} /></View>
+          <View style={{margin:1, borderColor:"", borderWidth:1}}><Button title="green" onPress={() => this.handleButtonPress("green","white")} /></View>
+          <View style={{margin:1, borderColor:"", borderWidth:1}}><Button title="purple" onPress={() => this.handleButtonPress("purple","white")} /></View>
+
+        </View> 
+      </View>
+    );
+  }
+}
+export default App;
+
