@@ -17,33 +17,41 @@ class App extends React.Component {
     this.state = {
      colorstate:"black",
        data:[
-       {id:1, buttoncolor:"", is_active:true},
-       {id:2, buttoncolor:"", is_active:true},
-       {id:3, buttoncolor:"", is_active:true} ,      
-       {id:4, buttoncolor:"", is_active:true}
+       {id:1, color:"red", is_active:false},
+       {id:2, color:"orange", is_active:false},
+       {id:3, color:"green", is_active:false} ,      
+       {id:4, color:"purple", is_active:false}
      ]
     };
   }
 
-  handleButtonPress = (val,ue) => {
+  handleButtonPress = (val,value) => {
     console.log('button pressed',val);
-    this.setState({colorstate:val})
-  
+    this.setState({colorstate : val})
+    let tempdata = this.state.data
+    for(let i=0;i<tempdata.length;i++){
+      if(value === tempdata[i].id){
+        this.state.data[i].is_active = true
+      }
+      else{
+         this.state.data[i].is_active = false
+       }
+    }
   };
   
   
 
   render() {
     // console.log('render executed');
-    // console.log("this.state-->",this.state)
+    console.log("this.state-->",this.state)
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' ,backgroundColor:this.state.colorstate}}>
         <View style={{ }}>
           <Text style={{color:"white", fontWeight:"bold", fontSize:30, marginBottom:30}}>BACKGROUND</Text>
-          <View style={{margin:1, borderColor:"", borderWidth:1}}><Button title="red" onPress={() => this.handleButtonPress("red", "white")} /> </View>
-          <View style={{margin:1, borderColor:"", borderWidth:1}}><Button title="ornge" onPress={() => this.handleButtonPress("orange", "white")} /></View>
-          <View style={{margin:1, borderColor:"", borderWidth:1}}><Button title="green" onPress={() => this.handleButtonPress("green","white")} /></View>
-          <View style={{margin:1, borderColor:"", borderWidth:1}}><Button title="purple" onPress={() => this.handleButtonPress("purple","white")} /></View>
+          <View style={{margin:1, borderColor:this.state.data[0].is_active ? "white" : "black", borderWidth:1}}><Button title="red" onPress={() => this.handleButtonPress(this.state.data[0].color, 1)} /> </View>
+          <View style={{margin:1, borderColor:this.state.data[1].is_active ? "white" : "black", borderWidth:1}}><Button title="ornge" onPress={() => this.handleButtonPress(this.state.data[1].color, 2)} /></View>
+          <View style={{margin:1, borderColor:this.state.data[2].is_active ? "white" : "black", borderWidth:1}}><Button title="green" onPress={() => this.handleButtonPress(this.state.data[2].color,3)} /></View>
+          <View style={{margin:1, borderColor:this.state.data[3].is_active ? "white" : "black", borderWidth:1}}><Button title="purple" onPress={() => this.handleButtonPress(this.state.data[3].color, 4)} /></View>
 
         </View> 
       </View>
