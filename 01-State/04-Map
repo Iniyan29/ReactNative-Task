@@ -1,0 +1,155 @@
+import * as React from 'react';
+import {
+  Button,
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from 'react-native';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    // console.log('constructor executed');
+
+    this.state = {
+      colorstate: 'black',
+      data: [
+        { id: 1, color: 'red', is_active: false},
+        { id: 2, color: 'orange', is_active: false},
+        { id: 3, color: 'green', is_active: false},
+        { id: 4, color: 'purple', is_active: false},
+        
+      ],
+      colorname:"",
+      is_active: false, 
+      showtextInput: false,
+      showButton: false,
+    };
+  }
+  
+  handleButtonPress = (value,val) =>{
+    // console.log('data',val)
+    this.setState({colorstate: value})
+    let tempdata = this.state.data;
+    for (let i = 0; i < tempdata.length; i++) {
+      if (val === tempdata[i].id) {
+        // console.log('if',val === tempdata[i].id)
+        tempdata[i].is_active = true;
+      } else {
+        tempdata[i].is_active = false;
+      }
+    }
+  }
+
+  createInput = () => {
+    this.setState({ showtextInput : true });
+    
+  };
+
+ createButton = () => {
+   if(this.state.colorname !== ""){
+     let newdata={id:this.state.data.length+1,color:this.state.colorname,is_active:false}
+    this.state.data.push(newdata)
+        this.setState({showButton : true });
+        this.setState({colorname:""})
+         this.setState({showtextInput : false });
+   }
+   else{
+  
+         this.state.showButton = false
+   }
+
+  };
+  
+  render() {
+    // console.log('render executed');
+    console.log('this.state-->', this.state);
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: this.state.colorstate,
+        }}>
+        <View style={{}}>
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: 30,
+              marginBottom: 30,
+            }}>
+            BACKGROUND
+          </Text>
+          {this.state.data.map((el,index)=>{
+      // console.log("el-->",el)
+      return(
+          <View
+            style={{
+              margin: 1,
+              borderColor: el.is_active ? 'white' : 'black',
+              borderWidth: 1,
+            }}>  
+            <Button
+              title={el.color}
+              onPress={() => this.handleButtonPress(el.color,el.id)}
+              
+            />
+          </View>
+             )
+    })}
+          
+            
+          <View style={{ margin: 10, flexDirection: 'row' }}>
+            {this.state.showtextInput ? (
+              <TextInput
+                value={this.state.colorname}
+                style={{
+                  backgroundColor: 'white',
+                  marginBottom: 10,
+                  height: 30,
+                  width: 150,
+                }}
+                onChangeText={(value) => this.setState({colorname:value})}
+              />
+            ) : null}
+             {this.state.showtextInput ? (<Button
+              title="insert"
+              onPress={() =>
+                this.createButton()  
+              }           
+            /> ) : null}
+          </View>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => this.createInput()}
+              style={{ height: 60, width: 60, borderRadius: 30 }}>
+              <Image
+                source={{
+                  uri: 'https://as2.ftcdn.net/v2/jpg/00/70/16/29/1000_F_70162903_5mFpUbO3ZfRyD4gslH8j2c5VxjGMKU9G.jpg',
+                }}
+                style={{
+                  height: 60,
+                  width: 60,
+                  backgroundColor: 'blue',
+                  borderRadius: 30,
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  }
+}
+export default App;
