@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  Image,
+  Image,   
 } from 'react-native';
 
 class App extends React.Component {
@@ -24,19 +24,32 @@ class App extends React.Component {
         { id: 4, color: 'purple', is_active: false},
         
       ],
-      colorname:"",
+      colorname:null,
       is_active: false, 
       showtextInput: false,
       showButton: false,
-    };
+    }
   }
   
+  // componentDidMount(){
+  //   let str="React"
+  //   let findValue=3
+  //   let arr=[{id:1},{id:2},{id:3},{id:4},{id:5},{id:6}]
+  //   for(let i=0; i<arr.length; i++){
+  //     console.log("arr[i]",arr[i])
+  //     console.log("arr[i].id",arr[i].id)
+  //     console.log("arr[i].id===6",arr[i].id===6)
+
+
+  //   }
+  // }
+
   handleButtonPress = (value,val) =>{
     // console.log('data',val)
     this.setState({colorstate: value})
     let tempdata = this.state.data;
-    for (let i = 0; i < tempdata.length; i++) {
-      if (val === tempdata[i].id) {
+    for (let i=0;i<tempdata.length;i++) {
+      if (val===tempdata[i].id) {
         // console.log('if',val === tempdata[i].id)
         tempdata[i].is_active = true;
       } else {
@@ -51,7 +64,7 @@ class App extends React.Component {
   };
 
  createButton = () => {
-   if(this.state.colorname !== ""){
+   if(this.state.colorname !== null){
      let newdata={id:this.state.data.length+1,color:this.state.colorname,is_active:false}
     this.state.data.push(newdata)
         this.setState({showButton : true });
@@ -62,12 +75,21 @@ class App extends React.Component {
   
          this.state.showButton = false
    }
-
   };
+
+  deleteButton = (value,index) =>{
+    console.log(index)
+    console.log(value)
+    let tempdata = this.state.data;
+    for (let i=0;i<tempdata.length;i++){
+     if(tempdata[i].id===value){
+      tempdata.splice(index,1)
+     }
+    }
+   this.setState({})
+  }
   
   render() {
-    // console.log('render executed');
-    console.log('this.state-->', this.state);
     return (
       <View
         style={{
@@ -76,7 +98,7 @@ class App extends React.Component {
           alignItems: 'center',
           backgroundColor: this.state.colorstate,
         }}>
-        <View style={{}}>
+        <View >
           <Text
             style={{
               color: 'white',
@@ -89,17 +111,24 @@ class App extends React.Component {
           {this.state.data.map((el,index)=>{
       // console.log("el-->",el)
       return(
+        <View style={{flexDirection:"row",justifyContent:"space-between"}}>
           <View
             style={{
-              margin: 1,
+            
               borderColor: el.is_active ? 'white' : 'black',
-              borderWidth: 1,
+              borderWidth: 3,
             }}>  
             <Button
               title={el.color}
               onPress={() => this.handleButtonPress(el.color,el.id)}
               
             />
+            
+          </View>
+          <TouchableOpacity
+          onPress={() => this.deleteButton(el.id,index)} >
+              <Text style={{color:"white"}}>DEL</Text>
+            </TouchableOpacity>
           </View>
              )
     })}
@@ -111,8 +140,7 @@ class App extends React.Component {
                 value={this.state.colorname}
                 style={{
                   backgroundColor: 'white',
-                  marginBottom: 10,
-                  height: 30,
+                  height: 40,
                   width: 150,
                 }}
                 onChangeText={(value) => this.setState({colorname:value})}
