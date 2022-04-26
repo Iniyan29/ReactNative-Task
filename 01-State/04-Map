@@ -10,7 +10,7 @@ import {
   Image,   
 } from 'react-native';
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     // console.log('constructor executed');
@@ -30,7 +30,16 @@ class App extends React.Component {
       showButton: false,
     }
   }
-  
+  // componentDidMount(){
+  //   let colors=["white","black","yellow","orange"]
+  //   let tempArr=JSON.parse(JSON.stringify(this.state.data))
+  //   let foundIndex=colors.indexOf("black")
+  //   console.log("foundIndex",foundIndex)
+  //   let foundIndex1=tempArr.findIndex((el)=>el.color==="green")
+  //   let filteredArray=tempArr.filter((el)=>el.id!==3)
+  //   console.log("filteredArray-->",filteredArray)
+  //   console.log("foundIndex1-->",foundIndex1)
+  // }
   // componentDidMount(){
   //   let str="React"
   //   let findValue=3
@@ -64,8 +73,16 @@ class App extends React.Component {
   };
 
  createButton = () => {
+   let Index
+   let idvalue
+   for(let i=0;i<this.state.data.length;)
+   {
+    Index = data.lastIndexOf(data[i].id)
+    idvalue=data[Index].id
+   }
+   console.log("lastIndex--->",Index)
    if(this.state.colorname !== null){
-     let newdata={id:this.state.data.length+1,color:this.state.colorname,is_active:false}
+     let newdata={id:idvalue+1,color:this.state.colorname,is_active:false}
     this.state.data.push(newdata)
         this.setState({showButton : true });
         this.setState({colorname:""})
@@ -77,19 +94,28 @@ class App extends React.Component {
    }
   };
 
-  deleteButton = (value,index) =>{
-    console.log(index)
-    console.log(value)
+  deleteButton = (value) =>{
+    // console.log(value)
     let tempdata = this.state.data;
-    for (let i=0;i<tempdata.length;i++){
-     if(tempdata[i].id===value){
-      tempdata.splice(index,1)
-     }
-    }
-   this.setState({})
-  }
+    let filteredArray=tempdata.filter((el)=>el.id!==value.id)
+  //   console.log("filteredArray-->",filteredArray)
+    // let index=tempdata.indexOf(value)
+    // let del=tempdata.splice(index,1)
+    // console.log(del)
+      
+    //  let index = tempdata.findIndex(value =>tempdata[i].id===value.id);
+    //  console.log("findIndex",index)
+    //  console.log(tempdata[i])
+    //  if(tempdata[i].id===value.id){
+    //   console.log("findIndex",index)
+    //  }
+    // }
+   this.setState({data:filteredArray})
   
-  render() {
+}
+  
+  render(){
+    console.log("state",this.state.data)
     return (
       <View
         style={{
@@ -126,7 +152,7 @@ class App extends React.Component {
             
           </View>
           <TouchableOpacity
-          onPress={() => this.deleteButton(el.id,index)} >
+          onPress={() => this.deleteButton(el)} >
               <Text style={{color:"white"}}>DEL</Text>
             </TouchableOpacity>
           </View>
@@ -177,7 +203,7 @@ class App extends React.Component {
           </View>
         </View>
       </View>
-    );
+    )
   }
 }
-export default App;
+
