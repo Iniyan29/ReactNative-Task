@@ -1,0 +1,245 @@
+import * as React from 'react';
+import {
+  Button,
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from 'react-native';
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    // console.log('constructor executed');
+
+    this.state = {
+      colorstate: 'black',
+      data: [
+        { id: 1, color: 'red', is_active: false, isEdited: false, CheckBox_is:false},
+        { id: 2, color: 'orange', is_active: false, isEdited: false, CheckBox_is:false},
+        { id: 3, color: 'green', is_active: false, isEdited: false, CheckBox_is:false},
+        { id: 4, color: 'purple', is_active: false, isEdited: false, CheckBox_is:false},
+
+      ],
+      colorname: null,
+      showtextInput: false,
+      showButton: false,
+      copyOfData: "",
+      EditedColorname: "",
+    }
+  }
+
+  handleButtonPress = (value) => {
+    this.setState({ colorstate: (value.color) })
+    let tempdata = this.state.data;
+    for (let i = 0; i < tempdata.length; i++) {
+      if (value.id === tempdata[i].id) {
+        tempdata[i].is_active = true;
+      } else {
+        tempdata[i].is_active = false;
+      }
+    }
+  }
+
+  createInput = () => {
+    this.setState({ showtextInput: true });
+    this.setState({ showButton: true });
+  };
+
+  createButton = () => {
+    let colorname2 = this.state.colorname.toLowerCase()
+    let tempdata = this.state.data
+    this.sameColor = false
+    for (let i = 0; i < tempdata.length; i++) {
+      if (colorname2 === tempdata[i].color) {
+        this.sameColor = true
+      }
+    }
+    let idvalue = this.state.data[this.state.data.length - 1].id
+    if (!this.sameColor && this.state.colorname !== null && isNaN(this.state.colorname)) {
+      let newdata = { id: idvalue + 1, color: this.state.colorname, isEdited: false, is_active: false }
+      this.state.data.push(newdata)
+      this.setState({ colorname: "" })
+      this.setState({ showButton: false });
+      this.setState({ showtextInput: false });
+    }
+    else {
+      this.state.showButton = false
+    }
+
+  };
+
+  EditButton = (value) => {
+    console.log("value", value)
+    this.setState({ copyOfData: value })
+    this.setState({ showButton: false });
+    this.setState({ showtextInput: false });
+    let tempdata = this.state.data
+    for (let i = 0; i < tempdata.length; i++) {
+      if (value.id === tempdata[i].id) {
+        // console.log("-->",value.id === tempdata[i].id)
+        tempdata[i].isEdited = true
+        this.setState({ EditedColorname: value.color })
+      }
+      else {
+        tempdata[i].isEdited = false
+        tempdata[i].is_active = false
+      }
+    }
+  }
+
+  AfterEditedToButton = () => {
+    let tempdata = this.state.data
+    for (let i = 0; i < tempdata.length; i++) {
+      if (this.state.copyOfData.id === tempdata[i].id) {
+        tempdata[i].color = this.state.EditedColorname
+        tempdata[i].isEdited = false
+      }
+    }
+    this.setState({})
+  }
+
+  deleteButton = (value) => {
+    // console.log(value)
+    let tempdata = this.state.data;
+    let filteredArray = tempdata.filter((el) => el.id !== value.id)
+    this.setState({ data: filteredArray })
+
+  }
+
+  CheckboxPressed=(value)=>{
+    console.log("..>>",value)
+    for(let i=0;i<this.state.data.length;i++){
+      if(value.id===this.state.data[i].id){
+        this.state.data[i].CheckBox_is=!this.state.data[i].CheckBox_is
+      }
+     
+      // else{
+      //   this.state.data[i].CheckBox_is=false
+      // }
+      this.setState({})
+    }
+  }
+
+  render() {
+    console.log("state", this.state)
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: this.state.colorstate.toLowerCase(),
+        }}>
+        {/* <TouchableOpacity 
+        onPress={() => this.AfterEditedToButton()}> */}
+        <View >
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: 30,
+              marginBottom: 30,
+            }}>
+            BACKGROUND
+          </Text>
+          {this.state.data.map((el,) => {
+            // console.log("el-->",el)
+            return (
+              <View style={{ flexDirection: "row", justifyContent: "space-between", alignContent: "center", alignItems: "center" }}>
+                <TouchableOpacity
+                  onPress={() => this.CheckboxPressed(el)}>
+                  <View style={{ height: 30, width: 30, borderRadius: 5, backgroundColor: "white", }}>
+                    {el.CheckBox_is ? <Image
+                      source={{ uri: "https://as1.ftcdn.net/v2/jpg/03/38/92/74/1000_F_338927425_ORe15ecNoxoWiV78YSdAQXXoHZzsNY4c.jpg" }}
+                      style={{height: 30, width: 30, borderRadius: 5}}>
+                      </Image> : null} 
+                      </View>
+                </TouchableOpacity>
+                <View
+                  style={{
+
+                    borderColor: el.is_active ? 'white' : 'black',
+                    borderWidth: 3,
+                  }}>
+
+                  {el.isEdited ? (<TextInput
+                    value={this.state.EditedColorname}
+                    style={{
+                      backgroundColor: 'white',
+                      height: 40,
+                      width: 50,
+                    }}
+                    onChangeText={(value) => this.setState({ EditedColorname: value })}
+                    onBlur={() => this.AfterEditedToButton()} 
+                  />
+                  ) : <Button
+                    title={el.color}
+                    onPress={() => this.handleButtonPress(el)} />}
+
+                </View>
+                <View style={{}}>
+                  <TouchableOpacity
+                    onPress={() => this.EditButton(el)}>
+                    <Text style={{ color: "white" }}>Edit</Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                  onPress={() => this.deleteButton(el)} >
+                  <Text style={{ color: "white" }}>DEL</Text>
+                </TouchableOpacity>
+              </View>
+            )
+          })}
+
+
+          <View style={{ margin: 10, flexDirection: 'row' }}>
+            {this.state.showtextInput ? (
+              <TextInput
+                value={this.state.colorname}
+                style={{
+                  backgroundColor: 'white',
+                  height: 40,
+                  width: 150,
+                }}
+                onChangeText={(value) => this.setState({ colorname: value })}
+              />
+            ) : null}
+            {this.state.showButton ? (<Button
+              title="insert"
+              onPress={() =>
+                this.createButton()
+              }
+            />) : null}
+          </View>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => this.createInput()}
+              style={{ height: 60, width: 60, borderRadius: 30 }}>
+              <Image
+                source={{
+                  uri: 'https://as2.ftcdn.net/v2/jpg/00/70/16/29/1000_F_70162903_5mFpUbO3ZfRyD4gslH8j2c5VxjGMKU9G.jpg',
+                }}
+                style={{
+                  height: 60,
+                  width: 60,
+                  borderRadius: 30,
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        {/* </TouchableOpacity> */}
+      </View>
+    )
+  }
+}
+
