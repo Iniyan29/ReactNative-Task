@@ -66,7 +66,7 @@ export default class App extends React.Component {
       let newdata = { id: idvalue + 1, color: this.state.colorname, isEdited: false, is_active: false }
       this.state.data.push(newdata)
       this.setState({ colorname: "" })
-      this.setState({ showButton: false });
+      this.setState({showButton: false });
       this.setState({ showtextInput: false });
     }
     else {
