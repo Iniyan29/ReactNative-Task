@@ -1,0 +1,118 @@
+import * as React from 'react';
+import {
+  Button,
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from 'react-native';
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    // console.log('constructor executed');
+    this.state = {
+      name: "User Name",
+      number: "Phone Number",
+      email: "E-mail",
+      errMsgName: "",
+      errMsgNumber: "",
+      errMsgEmail: "",
+    }
+  }
+  validateName = (value) => {
+    console.log(">>>", value)
+    this.setState({ errMsgName: "Minimum character 4" })
+    if (value.length > 3 && isNaN(value)) {
+      this.setState({ errMsgName: null })
+    }
+  }
+  validateNumber = (value,) => {
+    this.setState({ errMsgNumber: "Invalid Number" })
+    if (value.length === 10) {
+      this.setState({ errMsgNumber: null })
+    }
+  }
+  validateEmail = (value,) => {
+    this.setState({ errMsgEmail: "Invalid E-mail" })
+    let splitedValue = value.split("")
+    console.log({splitedValue})
+      if (splitedValue === "@") {
+        this.setState({ errMsgEmail: null })
+      }
+    }
+  textInputStyle = () => {
+    return {
+      backgroundColor: "#BE81F7",
+      borderBottomWidth: 2,
+      borderColor: "white",
+      fontSize: 20,
+      color: "white"
+    }
+  }
+  showTextInput = (placeholder, textInputStyle, validation, errMsg) => {
+    console.log("showTextInput", errMsg)
+    return (
+      <View>
+        <TextInput style={textInputStyle}
+          placeholderTextColor="white"
+          placeholder={placeholder}
+          onChangeText={(value) => { validation(value,) }
+          }
+        >
+        </TextInput>
+        <Text style={{
+          color: "red",
+          fontSize: 15
+        }}>{errMsg}
+        </Text>
+      </View>
+    )
+  }
+  render() {
+    console.log("state", this.state)
+    return (
+      <View style={{
+        flex: 1,
+        backgroundColor: "#BE81F7",
+        padding: 20
+      }}>
+        <View>
+          <Text
+            style={{
+              fontSize: 40,
+              color: "white",
+              alignSelf: "center",
+              marginTop: 50,
+              marginBottom: 120
+            }}>Foobar
+          </Text>
+          {this.showTextInput(this.state.name, this.textInputStyle(), this.validateName, this.state.errMsgName)}
+          {this.showTextInput(this.state.number, this.textInputStyle(), this.validateNumber, this.state.errMsgNumber)}
+          {this.showTextInput(this.state.email, this.textInputStyle(), this.validateEmail, this.state.errMsgEmail)}
+        </View>
+        <TouchableOpacity
+          style={{
+            fontSize: 20,
+            backgroundColor: "#8904B1",
+            padding: 20,
+            marginTop: 50,
+          }}>
+          <Text
+            style={{
+              alignSelf: "center",
+              fontWeight: "bold",
+              fontSize: 20,
+              color: "white"
+            }}>LOGIN
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+    )
+  }
+}
+
