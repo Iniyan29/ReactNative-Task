@@ -50,11 +50,11 @@ export default class App extends React.Component {
   };
 
   createButton = () => {
-    let colorname2 = this.state.colorname.toLowerCase()
+    let tempColorname = this.state.colorname.toLowerCase()
     let tempdata = this.state.data
     this.sameColor = false
     for (let i = 0; i < tempdata.length; i++) {
-      if (colorname2 === tempdata[i].color) {
+      if (tempColorname === tempdata[i].color) {
         this.sameColor = true
       }
     }

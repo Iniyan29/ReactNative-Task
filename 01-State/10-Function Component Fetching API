@@ -1,0 +1,77 @@
+
+import React,{useState} from 'react';
+import {
+  Button,
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from 'react-native';
+
+export default function App()  {
+  const[newData,setnewData]=useState([])
+  const[login,setlogin]=useState(true)
+
+  console.log("newData-->",newData)
+async function handleButtonPress (){
+const fetching = await fetch(" https://jsonplaceholder.typicode.com/users")
+const data = await fetching.json()
+
+setnewData([...data,...newData])
+setlogin(false)
+
+}
+
+return(
+  <View style={{
+        flex: 1,
+        backgroundColor: "#D8D8D8",
+        padding: 20,
+        justifyContent:"center"
+      }}>
+    {login?
+      <TouchableOpacity
+          style={{
+            backgroundColor: "#2E2E2E",
+            borderRadius:8
+          }}
+          onPress={()=>{handleButtonPress()}}
+          >
+          <Text
+            style={{
+              alignSelf: "center",
+              fontWeight: "bold",
+              fontSize: 16,
+              color: "white",
+              padding:10
+            }}>LOGIN
+          </Text>
+        </TouchableOpacity>
+         :null}
+      {   newData.map((el,) => {
+  console.log(el.name)
+  return( <View style={{backgroundColor:"#FBFBEF",padding:20,borderRadius:8,marginVertical:10,}} >
+  <View style={{flexDirection:"row"}}>
+  <Image style={{height:12,width:10,marginTop:6,marginRight:10,marginLeft:4}} source={{uri:"https://cdn-icons-
+
+png.flaticon.com/512/456/456212.png"}}/>
+               <Text style={{color:"",fontSize:16,fontWeight:"bold"}}>{el.name},</Text></View>
+               <View style={{flexDirection:"row"}}>
+  <Image style={{height:12,width:10,marginTop:6,marginRight:10,marginLeft:4}} source={{uri:"https://cdn-
+
+icons.flaticon.com/png/512/2099/premium/2099199.png?token=exp=1653319966~hmac=2676e6f1aab8fac74fa5a18a7df80060"}}/>
+                <Text style={{color:"",fontSize:16}}>{el.email},</Text></View>
+                <View style={{flexDirection:"row"}}>
+  <Image style={{height:12,width:10,marginTop:6,marginRight:10,marginLeft:4}} source={{uri:"https://cdn-
+
+icons.flaticon.com/png/512/3177/premium/3177361.png?token=exp=1653320316~hmac=ad4c028fa6b2fc15e3cd19bc30479d6d"}}/>
+                <Text style={{color:"",fontSize:16}}>{el.address.street},{el.address.suite},{el.address.city}.</Text></View>
+                </View>)
+})}
+        </View>
+)
+
+}
