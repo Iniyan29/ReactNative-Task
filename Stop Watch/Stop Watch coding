@@ -1,0 +1,127 @@
+import React, { useState } from 'react';
+import { Text, View, Button, TextInput, Image } from 'react-native';
+
+export default function Timer() {
+  const [buttonChange, setbuttonChange] = useState('Pause');
+  const [showButton, setshowButton] = useState([true]);
+  const [hour, sethour] = useState(0);
+  const [minute, setminute] = useState(0);
+  const [second, setsecond] = useState(0);
+  const [interval, setinterval] = useState();
+  const [changeButton, setchangeButton] = useState(true);
+
+  function startTimer() {
+    setshowButton(false);
+    runTimer();
+  }
+
+  function runTimer() {
+    let incrementSecond = second;
+    let incrementMinute = minute;
+    let incrementHour = hour;
+    const id = setInterval(incrementation, 100);
+    setinterval(id)
+    function incrementation() {
+      incrementSecond++;
+      setsecond(incrementSecond);
+      if (incrementSecond === 60) {
+        incrementSecond = 0;
+        setsecond(incrementSecond);
+        incrementMinute++;
+        setminute(incrementMinute);
+      }
+      if (incrementMinute === 60) {
+        incrementMinute = 0;
+        setminute(incrementMinute);
+        incrementHour++;
+        sethour(incrementHour);
+      }
+    }
+  }
+    function pauseTimer() {
+      clearInterval(interval);
+      setbuttonChange('Resume');
+      setchangeButton(false)
+    }
+    function resumeTimer(){
+      console.log("second",second)
+      runTimer()
+    }
+    function resetTimer(){
+      clearInterval(interval)
+      setsecond(0)
+      setminute(0)
+      sethour(0)
+      setshowButton(true)
+    }
+  return (
+    <View
+      style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center' }}>
+      <View
+        style={{
+          height: 150,
+          width: 150,
+          borderWidth: 2,
+          borderColor: '#FF0000',
+          borderRadius: 100,
+          flexDirection: 'row',
+          alignSelf: 'center',
+        }}>
+        <View
+          style={{
+            height: 30,
+            width: 30,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            marginLeft: 15,
+          }}>
+          <Text style={{ color: 'white', fontSize: 30, alignSelf: 'center' }}>
+            {hour}
+          </Text>
+        </View>
+        <View
+          style={{
+            height: 30,
+            width: 30,
+            marginLeft: 15,
+            alignSelf: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={{ color: 'white', fontSize: 30, alignSelf: 'center' }}>
+            {minute}
+          </Text>
+        </View>
+        <View
+          style={{
+            height: 30,
+            width: 30,
+            marginLeft: 15,
+            alignSelf: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={{ color: 'white', fontSize: 30, alignSelf: 'center' }}>
+            {second}
+          </Text>
+        </View>
+      </View>
+
+      {showButton ? (
+        <View style={{ marginTop: 100, width: 70, alignSelf: 'center' }}>
+          <Button color="#FF0000" title="start" onPress={() => startTimer()} />
+        </View>
+      ) : (
+        <View
+          style={{ marginTop: 100, flexDirection: 'row', alignSelf: 'center',}}>
+          <Button color="#FF0000" title="reset" onPress={() => resetTimer()} />
+          <View style={{ marginLeft: 60 }}>
+            <Button
+              color="#FF0000"
+              title={buttonChange}
+              onPress={() => {changeButton?pauseTimer():resumeTimer()}}
+            />
+          </View>
+        </View>
+      )}
+    </View>
+  );
+}
