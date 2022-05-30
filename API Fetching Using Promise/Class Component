@@ -1,0 +1,127 @@
+import * as React from 'react';
+import {
+  Button,
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from 'react-native';
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    // console.log('constructor executed');
+    this.state = {
+      email: "",
+      password:""
+    }
+  }
+
+
+   login=()=> {
+    fetch('https://reqres.in/api/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: this.state.email,
+        password:this.state. password,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+  }
+
+render()
+{
+  console.log(this.state.email)
+  return(
+    <View
+      style={{ flex: 1, backgroundColor: '#819FF7', justifyContent: 'center' }}>
+      <View style={{}}>
+        <View
+          style={{
+            height: 80,
+            borderRadius: 50,
+            backgroundColor: 'white',
+            width: 80,
+            alignSelf: 'center',
+            marginBottom: 20,
+          }}>
+          {' '}
+          <Image
+            style={{ height: 80, borderRadius: 50, width: 80 }}
+            source={{
+              uri: 'https://cdn-icons.flaticon.com/png/512/2504/premium/2504942.png?token=exp=1653813869~hmac=ea9496720632c92cca0ccaf4f10b1d04',
+            }}
+          />
+        </View>
+        <TextInput
+          style={{
+            padding: 15,
+            backgroundColor: 'white',
+            margin: 10,
+            borderRadius: 6,
+            fontSize: 16,
+            marginVertical: 5,
+          }}
+          placeholderTextColor=""
+          placeholder="E-mail"
+          onChangeText={(value) => {
+            this.setState({email:value});
+          }}></TextInput>
+        <TextInput
+          style={{
+            padding: 15,
+            backgroundColor: 'white',
+            margin: 10,
+            marginVertical: 5,
+            borderRadius: 6,
+            fontSize: 16,
+          }}
+          placeholderTextColor=""
+          placeholder="Password"
+          onChangeText={(value) => {
+            this.setState({password:value});
+          }}></TextInput>
+        <View style={{ flexDirection: 'row', margin: 15 }}>
+          <Image style={{}} />
+          <Text style={{ color: 'white' }}>Remember me </Text>
+          <Text style={{ color: 'white', marginLeft: 80 }}>
+            {' '}
+            Forget Password?
+          </Text>
+        </View>
+        <TouchableOpacity
+          style={{
+            padding: 15,
+            backgroundColor: 'white',
+            margin: 10,
+            marginVertical: 5,
+            borderRadius: 6,
+          }}
+          onPress={() => {this.login()}}>
+          <Text
+            style={{
+              fontSize: 20,
+              alignSelf: 'center',
+              fontFamily: 'bold',
+              color: '#585858',
+            }}>
+            Login
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  )
+}
+}
